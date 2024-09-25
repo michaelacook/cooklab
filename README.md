@@ -21,20 +21,20 @@ In keeping with the goal of emulating a medium sized office network, I have kept
 
 VLANs 20, 30, and 40 all allow for thirty host addresses, which is more than enough room to grow for small teams of twelve to fifteen employees. The IT deparment VLAN has a smaller CIDR for a smaller team of administrators and support agents. The Infrastructure VLAN is able to support six servers, which is enough to support the organization's technology needs. A Guest VLAN was created to emulate a Guest WiFi service. The Guest VLAN has no connectivity to any other VLAN, with the exception that clients on this VLAN can obtain a DHCP lease. Otherwise, ICMP is disabled and only ports 80 and 443 have been opened to the public Internet.
 
-![VLANS](img\screenshot1_vlans.PNG)
+![VLANS](img/screenshot1_vlans.PNG)
 --------------------------
 
 ## Firewall Configuration
 
 A big part of this project was correctly configuring various services on **firewall01**. The following shows the interfaces configured on the firewall:
 
-![Firewall Interfaces](img\screenshot2_firewallinterfaces.PNG)
+![Firewall Interfaces](img/screenshot2_firewallinterfaces.PNG)
 
 ### DHCP Relay
 
 In order to allow clients to receive an IP address lease, DHCP relay was necessary. DHCP Discover requests are broadcasts, and broadcasts cannot leave the local network, or broadcast domain, that they originate on. DHCP relay solves this problem by forwarding DHCP Discover broadcasts to specified servers on the Infrastructure VLAN. Enabling DHCP relay in Proxmox disables the ability to have the firewall provide DHCP for the network. While it would have been simple to configure DHCP on the firewall, most organizations prefer to use the DHCP server role on Windows Server for greater control and scalability. I enabled DHCP relay for all client VLANs and configured two upstream servers, which were configured for load balancing and replication.
 
-![DHCP Relay](img\screenshot3_dhcprelay.PNG)
+![DHCP Relay](img/screenshot3_dhcprelay.PNG)
 
 ### Firewall Rules
 
@@ -54,7 +54,7 @@ Each client VLAN required outbound rules to allow web traffic, file sharing and 
 |TCP|135|RCP|
 
 
-![Example of firewall rules for client VLANs](img\screenshot4_clientfirewallrules.PNG)
+![Example of firewall rules for client VLANs](img/screenshot4_clientfirewallrules.PNG)
 
 Additionally, inbound traffic for each of these protocols needed to be allowed into VLAN 10 for each client VLAN in order to have full network functionality. Fortunately, the Pfsense web configurator provides a convenient way to copy sets of rules while modifying the source value, making the creation of additional rules for each VLAN faster and less error-prone. Due to the large number of rules for VLAN 10 I won't include a screenshot here.
 
@@ -64,7 +64,7 @@ An interesting point is that while I allowed inbound traffic for port 464 Kerber
 
 Most organizations provide a means for guests to connect to the Internet without having access to resources on the corporate intranet. To achieve this, I created a Guest VLAN 200 with limited connectivity. DHCP relay was enabled for this VLAN, but otherwise all traffic to any other VLAN was blocked. I then created outbound rules for web and DNS traffic. This achieved the intended goal of allowing clients on this VLAN access to the web, and nothing more.
 
-![Guest VLAN Rules](img\screenshot5_guestvlanrules.PNG)
+![Guest VLAN Rules](img/screenshot5_guestvlanrules.PNG)
 
 <!-- -------------------------------------- -->
 
@@ -77,19 +77,19 @@ DHCP was first installed and configured first on `DC02` and failover to `DC01` w
 I created individual scopes for each client VLAN with a lease time of eight hours, given this is a standard work day. Each scope was also configured with options to provide default gateway and DNS servers.
 
 DHCP configuration on `DC02`:
-![DHCP Scopes on DC02](img\screenshot6_dhcp1.PNG)
+![DHCP Scopes on DC02](img/screenshot6_dhcp1.PNG)
 
 DHCP configuration on `DC01`:
-![DHCP Scopes on DC01](img\screenshot7_dhcp2.PNG)
+![DHCP Scopes on DC01](img/screenshot7_dhcp2.PNG)
 
 Example of scope configuration:
-![Example of scope configuration](img\screenshot8_dhcp3.PNG)
+![Example of scope configuration](img/screenshot8_dhcp3.PNG)
 
 Example of scope options:
-![Example of scope options](img\screenshot10_dhcpoptions.PNG)
+![Example of scope options](img/screenshot10_dhcpoptions.PNG)
 
 Example of client IP configuration:
-![Client DHCP information](img\screenshot9_dhcp4.PNG)
+![Client DHCP information](img/screenshot9_dhcp4.PNG)
 
 <!-- -------------------------------- -->
 
@@ -98,19 +98,19 @@ Example of client IP configuration:
 `DC01` and `DC02` both have Active Directory Domain Services installed, and both host an Active Directory-integrated DNS zone with zone replication configured between servers. A new forest was created with the domain `cooklab.local` with a forest functional level of Windows Server 2016. For the time being, there are no additional sites or other domains in the forest. Both `DC01` and `DC02` host an Active Directory-integrated zone for `cooklab.local`.
 
 Forest Info:
-![Forest Info](img\screenshot11_forestinfo.PNG)
+![Forest Info](img/screenshot11_forestinfo.PNG)
 
 DNS:
-![Cooklab DNS zone](img\screenshot12_dns.PNG)
+![Cooklab DNS zone](img/screenshot12_dns.PNG)
 
-![Welcome to the cooklab.local domain](img\screenshot13_domainjoin.PNG)
+![Welcome to the cooklab.local domain](img/screenshot13_domainjoin.PNG)
 
 ### Organizational Unit Structure
 
 The organizational structure for users and computers was organized by department and by object type. Each department has an OU with a Users sub-OU and a computers sub-OU.
 
-![Organizational Unit Structure](img\screenshot14_organizationalunits.PNG)
-![Organizational Units in PowerShell](img\screenshot15_ouspowershell.PNG)
+![Organizational Unit Structure](img/screenshot14_organizationalunits.PNG)
+![Organizational Units in PowerShell](img/screenshot15_ouspowershell.PNG)
 
 ### Creating Test Users
 
@@ -157,21 +157,21 @@ It is common for organizations to centralize files in network shares, in fact, S
 
 I installed DFS Namespaces, DFS Replication and File Server Resource Manager roles on each file server and configured a DFS namespace called `\\cooklab.local\data` hosted on both `FS01` and `FS02`. Each of the department file shares was added to the DFS namespace.
 
-![DFS Root](img\screenshot16_dfs1.PNG)
+![DFS Root](img/screenshot16_dfs1.PNG)
 
 Additionally, I configured full-mesh replication between `FS01` and `FS02` to ensure all shares created on the primary file server are replicated and available on the secondary server. This was done for redundancy and high availability.
 
-![DFS Replication](img\screenshot18_dfsreplication.PNG)
+![DFS Replication](img/screenshot18_dfsreplication.PNG)
 
 ### File Screens
 
 To enhance organizational security, I configured file screening for the Administration, Business Development, Finance, and Marketing Shares to prevent employees from adding file types they do not need to be able to use in their work. I created a file screen template to actively screen backup files, executables, system files and webpage files. I then applied this template to the shares mentioned above.
 
 File screen template:
-![File Screen Template for Non-Technical Workers](img\screenshot16_filescreening1.PNG)
+![File Screen Template for Non-Technical Workers](img/screenshot16_filescreening1.PNG)
 
 File screens:
-![File Screens](img\screenshot17_filescreening2.PNG)
+![File Screens](img/screenshot17_filescreening2.PNG)
 
 For now, I decided not to implement quotas. This would be a good idea to implement in the future.
 
@@ -180,13 +180,13 @@ For now, I decided not to implement quotas. This would be a good idea to impleme
 Rather than expecting employees to remember the UNC path for their departmental file shares, I mapped shares to File Explorer for users based on department membership using group policy. I created a group policy object called Mapped Drives and edited `User Configuration>Windows Settings>Drive Maps` to create each drive map using the DFS name for each file share. I then targeted each drive map to users in the relevant department using item-level targeting.
 
 Drive maps:
-![Drive Maps](img\screenshot19_drivemaps.PNG)
+![Drive Maps](img/screenshot19_drivemaps.PNG)
 
 Example of targeting based on group membership:
-![Drive Map Targeting](img\screenshot20_itemleveltargeting.PNG)
+![Drive Map Targeting](img/screenshot20_itemleveltargeting.PNG)
 
 User who belongs to the Finance and Administration department group:
-![Example of user's mapped drives](img\screenshot21_drivemapuser.PNG)
+![Example of user's mapped drives](img/screenshot21_drivemapuser.PNG)
 
 ## Next Steps
 
