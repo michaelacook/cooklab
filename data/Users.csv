@@ -1,1 +1,30 @@
-﻿Firstname,Lastname,Country,Company,Department,Title,Displayname,AccountPassword,PasswordNeverExpires,ChangePasswordAtLogon,UserPrincipalName
+﻿Name,Department,Title,SamAccountName,UserPrincipalName
+Sarah Martinez,Finance and Administration,Payroll Officer,sarah.martinez,sarah.martinez@cooklab.local
+Olivia Williams,Finance and Administration,Admin Assistant,olivia.williams,olivia.williams@cooklab.local
+Sophia Lopez,Finance and Administration,Accountant,sophia.lopez,sophia.lopez@cooklab.local
+Laura Johnson,Finance and Administration,Admin Assistant,laura.johnson,laura.johnson@cooklab.local
+Emma Davis,Finance and Administration,Finance Analyst,emma.davis,emma.davis@cooklab.local
+James Smith,Finance and Administration,Finance Manager,james.smith,james.smith@cooklab.local
+David Wilson,Finance and Administration,Accountant,david.wilson,david.wilson@cooklab.local
+Emily Gonzalez,Marketing,Marketing Director,emily.gonzalez,emily.gonzalez@cooklab.local
+John Jones,Marketing,Social Media Manager,john.jones,john.jones@cooklab.local
+Sophia Johnson,Marketing,PR Manager,sophia.johnson,sophia.johnson@cooklab.local
+Matthew Davis,Marketing,Content Creator,matthew.davis,matthew.davis@cooklab.local
+Grace Brown,Marketing,SEO Specialist,grace.brown,grace.brown@cooklab.local
+Andrew Smith,Marketing,PR Manager,andrew.smith,andrew.smith@cooklab.local
+Isabella Johnson,Marketing,Content Creator,isabella.johnson,isabella.johnson@cooklab.local
+Samuel Davis,Marketing,Social Media Manager,samuel.davis,samuel.davis@cooklab.local
+Emma Thomas,Sales,Sales Coordinator,emma.thomas,emma.thomas@cooklab.local
+Andrew Anderson,Sales,Sales Coordinator,andrew.anderson,andrew.anderson@cooklab.local
+Isabella Jones,Sales,Sales Associate,isabella.jones,isabella.jones@cooklab.local
+Grace Davis,Sales,Account Executive,grace.davis,grace.davis@cooklab.local
+Michael Williams,Sales,Sales Manager,michael.williams,michael.williams@cooklab.local
+Matthew Gonzalez,Sales,Customer Success Rep,matthew.gonzalez,matthew.gonzalez@cooklab.local
+James Wilson,Sales,Sales Coordinator,james.wilson,james.wilson@cooklab.local
+Michael Smith,IT,IT Support Specialist,michael.smith,michael.smith@cooklab.local
+David Davis,IT,Network Engineer,david.davis,david.davis@cooklab.local
+Grace Johnson,IT,System Administrator,grace.johnson,grace.johnson@cooklab.local
+Samuel Thomas,IT,Security Analyst,samuel.thomas,samuel.thomas@cooklab.local
+Laura Wilson,IT,IT Manager,laura.wilson,laura.wilson@cooklab.local
+Emma Rodriguez,IT,System Administrator,emma.rodriguez,emma.rodriguez@cooklab.local
+Michael Brown,IT,Security Analyst,michael.brown,michael.brown@cooklab.local
